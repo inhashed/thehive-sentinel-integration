@@ -1,0 +1,2 @@
+thehive4py==1.6.0
+adal

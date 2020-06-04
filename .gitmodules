@@ -1,0 +1,3 @@
+[submodule "deploy-thehive-sentinel-integration/ansible/roles/ansible-thehive"]
+	path = deploy-thehive-sentinel-integration/ansible/roles/ansible-thehive
+	url = https://github.com/NVISO-BE/ansible-thehive

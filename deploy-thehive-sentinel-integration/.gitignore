@@ -1,0 +1,15 @@
+# Compiled files
+.terraform.tfstate.lock.info
+*.tfstate
+*.backup
+*.tfvars
+
+# Module directory
+.terraform/
+
+# Build artifacts
+*.deb
+package/
+
+# Ruby
+.lock

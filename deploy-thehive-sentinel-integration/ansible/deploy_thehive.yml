@@ -1,0 +1,31 @@
+---
+- name: Configure The Hive systems
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+  - name: Install The Hive
+    import_role:
+      name: ansible-thehive
+    vars:
+      organization: "{{ organization }} "
+      sslcert_commonname: "{{ sslcert_commonname }}"
+      cortex_api_key: "{{ cortex_api_key }}"
+      thehivesentinelhooks: "{{ thehivesentinelhooks }}"
+      thehivesentinelhooks_logLevel: "{{ thehivesentinelhooks_logLevel }}"
+      resolvedCaseURL: "{{ resolvedCaseURL }}"
+      ignoredAlertURL: "{{ ignoredAlertURL }}"
+      importedAlertURL: "{{ importedAlertURL }}"
+      newCaseURL: "{{ newCaseURL }}"
+      newAlertURL: "{{ newAlertURL }}"
+      thehivesentinelincidents: "{{ thehivesentinelincidents }}"
+      thehive_api_key: "{{thehive_api_key}}"
+      sentinel_tenantId: "{{sentinel_tenantId}}"
+      sentinel_subscriptionId: "{{sentinel_subscriptionId}}"
+      sentinel_clientId: "{{sentinel_clientId}}"
+      sentinel_clientSecret: "{{sentinel_clientSecret}}" 
+      sentinel_resourceGroupName: "{{sentinel_resourceGroupName}}"
+      sentinel_workspaceName: "{{ sentinel_workspaceName}}"
+      sentinel_workspaceId: "{{sentinel_workspaceId}}"
