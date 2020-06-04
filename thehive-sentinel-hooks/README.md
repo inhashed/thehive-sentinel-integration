@@ -146,7 +146,7 @@ The URL of the Azure Sentinel incident.
 To build the Golang application use the following command line:
 
 ```sh
-CGO_ENABLED=0 GOOS=linux go build -a -ldflags "-w -s" -installsuffix cgo -o main .
+CGO_ENABLED=0 GOOS=linux go build -a -ldflags "-w -s" -installsuffix cgo -o thehivesentinelhooks .
 ```
 
 ## Docker
@@ -156,7 +156,7 @@ Using the [Dockerfile](Dockerfile), you can create a Docker container of thehive
 A Docker container of thehive-sentinel-hooks is available on Docker Hub.
 
 ```sh
-docker run -v /opt/thehivesentinelhooks/etc:/etc/thehivesentinelhooks -d -p 9002:9002 --name thehivesentinelhooks wstinkens/thehivesentinelhooks:latest
+docker run -v /opt/thehivesentinelhooks/etc:/etc/thehivesentinelhooks -d -p 9002:9002 --name thehivesentinelhooks nvisobe/thehivesentinelhooks:latest
 ```
 
 ## Ansible
