@@ -99,6 +99,24 @@ def getSentinelAlertArtifacts(data):
                         artifacts.append(AlertArtifact(dataType='account', data=artifact['AadUserId']))
                     else:
                         logging.info("Unknown account entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                elif artifact['Type'] == "file":
+                    name = artifact.get('Name')
+                    if name:
+                        artifacts.append(AlertArtifact(dataType='filename', data=artifact['Name']))
+                    else:
+                        logging.info("Unknown file entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                elif artifact['Type'] == "filehash":
+                    value = artifact.get('Value')
+                    if value:
+                        artifacts.append(AlertArtifact(dataType='hash', data=artifact['Value']))
+                    else:
+                        logging.info("Unknown filehash entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                elif artifact['Type'] == "process":
+                    commandline = artifact.get('CommandLine')
+                    if commandline:
+                        artifacts.append(AlertArtifact(dataType='filename', data=artifact['CommandLine']))
+                    else:
+                        logging.info("Unknown process entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
                 else:
                     logging.info("Unknown entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
     return artifacts
