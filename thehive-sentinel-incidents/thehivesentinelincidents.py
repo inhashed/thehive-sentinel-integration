@@ -72,34 +72,35 @@ def getSentinelAlertArtifacts(data):
         index += 1
 
     for row in row_list:
-        entities_json = json.loads(row[column_index["Entities"]])
-        for artifact in entities_json:
-            if artifact['Type'] == "ip":
-                address = artifact.get('Address')
-                if address:
-                    artifacts.append(AlertArtifact(dataType='ip', data=artifact['Address']))
+        if row[column_index["Entities"]] != "" :
+            entities_json = json.loads(row[column_index["Entities"]])
+            for artifact in entities_json:
+                if artifact['Type'] == "ip":
+                    address = artifact.get('Address')
+                    if address:
+                        artifacts.append(AlertArtifact(dataType='ip', data=artifact['Address']))
+                    else:
+                        logging.info("Unknown ip entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                elif artifact['Type'] == "host":
+                    hostname = artifact.get('HostName')
+                    azureID = artifact.get('AzureID')
+                    if hostname:
+                        artifacts.append(AlertArtifact(dataType='host', data=artifact['HostName']))
+                    elif azureID:
+                        artifacts.append(AlertArtifact(dataType='host', data=artifact['AzureID']))
+                    else:
+                        logging.info("Unknown host entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                elif artifact['Type'] == "account":
+                    name = artifact.get('Name')
+                    aadUserId = artifact.get('AadUserId')
+                    if name:
+                        artifacts.append(AlertArtifact(dataType='account', data=artifact['Name']))
+                    elif aadUserId:
+                        artifacts.append(AlertArtifact(dataType='account', data=artifact['AadUserId']))
+                    else:
+                        logging.info("Unknown account entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
                 else:
-                    logging.info("Unknown ip entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
-            elif artifact['Type'] == "host":
-                hostname = artifact.get('HostName')
-                azureID = artifact.get('AzureID')
-                if hostname:
-                    artifacts.append(AlertArtifact(dataType='host', data=artifact['HostName']))
-                elif azureID:
-                    artifacts.append(AlertArtifact(dataType='host', data=artifact['AzureID']))
-                else:
-                    logging.info("Unknown host entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
-            elif artifact['Type'] == "account":
-                name = artifact.get('Name')
-                aadUserId = artifact.get('AadUserId')
-                if name:
-                    artifacts.append(AlertArtifact(dataType='account', data=artifact['Name']))
-                elif aadUserId:
-                    artifacts.append(AlertArtifact(dataType='account', data=artifact['AadUserId']))
-                else:
-                    logging.info("Unknown account entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
-            else:
-                logging.info("Unknown entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
+                    logging.info("Unknown entity: " + json.dumps(entities_json, indent=4, sort_keys=True))
     return artifacts
 
 
