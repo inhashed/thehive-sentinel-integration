@@ -1,6 +1,6 @@
-# sentinel-la-updateincident
+# sentinel-la-closeASCalert
 
-Sentinel-la-updateincident is a Logic App with a HTTP webrequest trigger to be used together with [thehivesentinelhooks](../../thehive-sentinel-hooks). The URL of the HTTP webrequest trigger should be set as the importedAlertURL parameter.
+Sentinel-la-closeASCalert is a Logic App with a HTTP webrequest trigger to be used together with the sentinel-la-closeincidentfromalert Logic App.
 
 ## Request body
 
@@ -54,6 +54,15 @@ The id of the Azure subscription of Azure Sentinel.
 
 The id of the Azure Log Analytics workspace of Azure Sentinel.
 
+#### sentinelWorkspaceName
+
+The name of the Azure Log Analytics workspace of Azure Sentinel.
+
 #### userName
 
 Username for Logic App connection.
+
+## Managed Identity
+
+A system-assigned managed identity is created at deployment. The following RBAC permissions should be assigned on the Azure subscription:
+- Security Admimnistrator

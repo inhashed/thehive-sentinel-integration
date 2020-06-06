@@ -1,6 +1,6 @@
-# sentinel-la-updateincident
+# sentinel-la-closeincidentfromalert
 
-Sentinel-la-updateincident is a Logic App with a HTTP webrequest trigger to be used together with [thehivesentinelhooks](../../thehive-sentinel-hooks). The URL of the HTTP webrequest trigger should be set as the importedAlertURL parameter.
+Sentinel-la-closeincidentfromalert is a Logic App with a HTTP webrequest trigger to be used together with [thehivesentinelhooks](../../thehive-sentinel-hooks). The URL of the HTTP webrequest trigger should be set as the ignoredAlertURL parameter.
 
 ## Request body
 
@@ -53,6 +53,10 @@ The id of the Azure subscription of Azure Sentinel.
 #### sentinelWorkspaceId
 
 The id of the Azure Log Analytics workspace of Azure Sentinel.
+
+#### sentinelWorkspaceName
+
+The name of the Azure Log Analytics workspace of Azure Sentinel.
 
 #### userName
 

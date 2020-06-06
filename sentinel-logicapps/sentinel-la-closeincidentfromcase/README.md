@@ -49,3 +49,7 @@ The URL of the HTTP webrequest trigger of sentinel-la-closeincidentfromalert Log
 #### thehiveurl
 
 The URL of a TheHive instance.
+
+#### userName
+
+Username for Logic App connection.

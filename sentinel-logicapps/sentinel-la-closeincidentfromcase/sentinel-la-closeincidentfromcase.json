@@ -14,7 +14,7 @@
             "defaultValue": "nviso-thehive.example.com",
             "type": "string"
         },
-        "UserName": {
+        "userName": {
             "defaultValue": "<username>@<domain>",
             "type": "string"
         }
@@ -29,7 +29,7 @@
             "name": "[variables('AzureKeyVaultConnectionName')]",
             "location": "[resourceGroup().location]",
             "properties": {
-                "displayName": "[parameters('UserName')]",
+                "displayName": "[parameters('userName')]",
                 "customParameterValues": {},
                 "api": {
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/keyvault')]"
