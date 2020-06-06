@@ -35,6 +35,24 @@
                 "definition": {
                     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
                     "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "highseverityteamswebhook": {
+                            "defaultValue": "[parameters('highseverityteamswebhook')]",
+                            "type": "String"
+                        },
+                        "lowseverityteamswebhook": {
+                            "defaultValue": "[parameters('mediumseverityteamswebhook')]",
+                            "type": "String"
+                        },
+                        "mediumseverityteamswebhook": {
+                            "defaultValue": "[parameters('mediumseverityteamswebhook')]",
+                            "type": "String"
+                        },
+                        "thehivebaseurl": {
+                            "defaultValue": "[parameters('thehivebaseurl')]",
+                            "type": "String"
+                        }
+                    },
                     "triggers": {
                         "manual": {
                             "type": "Request",
@@ -164,7 +182,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "View Azure Incident",
                                                             "target": [
-                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                                "@{triggerBody()?['object']?['customFields']?['URLStruct']?['incidentURL']}"
                                                             ]
                                                         },
                                                         {
@@ -224,7 +242,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "View Azure Incident",
                                                             "target": [
-                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                                "@{triggerBody()?['object']?['customFields']?['URLStruct']?['incidentURL']}"
                                                             ]
                                                         },
                                                         {
@@ -284,7 +302,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "View Azure Incident",
                                                             "target": [
-                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                                "@{triggerBody()?['object']?['customFields']?['URLStruct']?['incidentURL']}"
                                                             ]
                                                         },
                                                         {
