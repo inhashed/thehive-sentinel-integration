@@ -1,0 +1,357 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PlaybookName": {
+            "defaultValue": "sentinel-la-sendteamsmessage",
+            "type": "string"
+        },
+        "highseverityteamswebhook": {
+            "defaultValue": "TeamsIncommingWebhookURL",
+            "type": "string"
+        },
+        "lowseverityteamswebhook": {
+            "defaultValue": "TeamsIncommingWebhookURL",
+            "type": "string"
+        },
+        "mediumseverityteamswebhook": {
+            "defaultValue": "TeamsIncommingWebhookURL",
+            "type": "string"
+        },
+        "thehivebaseurl": {
+            "defaultValue": "-thehive.example.com",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('PlaybookName')]",
+            "location": "westeurope",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "details": {
+                                            "properties": {
+                                                "caseId": {
+                                                    "type": "integer"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "object": {
+                                            "properties": {
+                                                "customFields": {
+                                                    "properties": {
+                                                        "URLStruct": {
+                                                            "properties": {
+                                                                "incidentURL": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "alertStruct": {
+                                                            "properties": {
+                                                                "alertIDs": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "numberStruct": {
+                                                            "properties": {
+                                                                "incidentNumber": {
+                                                                    "type": "integer"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "owner": {
+                                                    "type": "string"
+                                                },
+                                                "resolutionStatus": {
+                                                    "type": "string"
+                                                },
+                                                "resolutionSummary": {
+                                                    "type": "string"
+                                                },
+                                                "severity": {
+                                                    "type": "integer"
+                                                },
+                                                "source": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "tlp": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "objectId": {
+                                            "type": "string"
+                                        },
+                                        "objectType": {
+                                            "type": "string"
+                                        },
+                                        "operation": {
+                                            "type": "string"
+                                        },
+                                        "organization": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Switch_Alert_Severity": {
+                            "runAfter": {},
+                            "cases": {
+                                "Alert_Severity_==_High": {
+                                    "case": 3,
+                                    "actions": {
+                                        "High_Severity:_Return_Status_Code_200:_Success": {
+                                            "runAfter": {
+                                                "Post_a_High_Severity_Teams_message": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Response",
+                                            "kind": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "message": "Send a high severity Teams message  for @{triggerBody()?['organization']} Incident @{triggerBody()?['object']?['customFields']?['numberStruct']?['incidentNumber']}: @{triggerBody()?['object']?['title']}"
+                                                },
+                                                "statusCode": 200
+                                            }
+                                        },
+                                        "Post_a_High_Severity_Teams_message": {
+                                            "runAfter": {},
+                                            "type": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "@@context": "http://schema.org/extensions",
+                                                    "@@type": "MessageCard",
+                                                    "potentialAction": [
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "View Azure Incident",
+                                                            "target": [
+                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "Access TheHive",
+                                                            "target": [
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "sections": [
+                                                        {
+                                                            "title": "Detected at @{triggerBody()?['Organization']} on @{utcNow('yyyy-MM-ddTHH:mm:ssZ')}"
+                                                        },
+                                                        {
+                                                            "text": "@{first(split(triggerBody()?['object']?['description'], 'Link:'))}"
+                                                        }
+                                                    ],
+                                                    "summary": "@{triggerBody()?['object']?['title']} at @{triggerBody()?['Organization']}",
+                                                    "title": "@{triggerBody()?['object']?['title']}"
+                                                },
+                                                "method": "POST",
+                                                "uri": "@parameters('highseverityteamswebhook')"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Alert_Severity_==_Low": {
+                                    "case": 1,
+                                    "actions": {
+                                        "Low_Severity:_Return_Status_Code_200:_Success": {
+                                            "runAfter": {
+                                                "Post_a_Low_Severity_Teams_message": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Response",
+                                            "kind": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "message": "Send a low severity Teams message  for @{triggerBody()?['organization']} Incident @{triggerBody()?['object']?['customFields']?['numberStruct']?['incidentNumber']}: @{triggerBody()?['object']?['title']}"
+                                                },
+                                                "statusCode": 200
+                                            }
+                                        },
+                                        "Post_a_Low_Severity_Teams_message": {
+                                            "runAfter": {},
+                                            "type": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "@@context": "http://schema.org/extensions",
+                                                    "@@type": "MessageCard",
+                                                    "potentialAction": [
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "View Azure Incident",
+                                                            "target": [
+                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "Access TheHive",
+                                                            "target": [
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "sections": [
+                                                        {
+                                                            "title": "Detected at @{triggerBody()?['Organization']} on @{utcNow('yyyy-MM-ddTHH:mm:ssZ')}"
+                                                        },
+                                                        {
+                                                            "text": "@{first(split(triggerBody()?['object']?['description'], 'Link:'))}"
+                                                        }
+                                                    ],
+                                                    "summary": "@{triggerBody()?['object']?['title']} at @{triggerBody()?['Organization']}",
+                                                    "title": "@{triggerBody()?['object']?['title']}"
+                                                },
+                                                "method": "POST",
+                                                "uri": "@parameters('lowseverityteamswebhook')"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Alert_Severity_==_Medium": {
+                                    "case": 2,
+                                    "actions": {
+                                        "Medium_Severity:_Return_Status_Code_200:_Success": {
+                                            "runAfter": {
+                                                "Post_a_Medium_Severity_Teams_message": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Response",
+                                            "kind": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "message": "Send a medium severity Teams message  for @{triggerBody()?['organization']} Incident @{triggerBody()?['object']?['customFields']?['numberStruct']?['incidentNumber']}: @{triggerBody()?['object']?['title']}"
+                                                },
+                                                "statusCode": 200
+                                            }
+                                        },
+                                        "Post_a_Medium_Severity_Teams_message": {
+                                            "runAfter": {},
+                                            "type": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "@@context": "http://schema.org/extensions",
+                                                    "@@type": "MessageCard",
+                                                    "potentialAction": [
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "View Azure Incident",
+                                                            "target": [
+                                                                "@{triggerBody()?['object']?['customFields']?['IncidentURL']?['string']}"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "@@context": "http://schema.org",
+                                                            "@@type": "ViewAction",
+                                                            "name": "Access TheHive",
+                                                            "target": [
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "sections": [
+                                                        {
+                                                            "title": "Detected at @{triggerBody()?['Organization']} on @{utcNow('yyyy-MM-ddTHH:mm:ssZ')}"
+                                                        },
+                                                        {
+                                                            "text": "@{first(split(triggerBody()?['object']?['description'], 'Link:'))}"
+                                                        }
+                                                    ],
+                                                    "summary": "@{triggerBody()?['object']?['title']} at @{triggerBody()?['Organization']}",
+                                                    "title": "@{triggerBody()?['object']?['title']}"
+                                                },
+                                                "method": "POST",
+                                                "uri": "@parameters('mediumseverityteamswebhook')"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "default": {
+                                "actions": {
+                                    "Failed_Response:_Status_Code_400": {
+                                        "runAfter": {},
+                                        "type": "Response",
+                                        "kind": "Http",
+                                        "inputs": {
+                                            "body": {
+                                                "message": "Failed to send Teams Message, alert severity unkown: @{triggerBody()?['object']?['severity']}"
+                                            },
+                                            "statusCode": 400
+                                        }
+                                    },
+                                    "Terminate": {
+                                        "runAfter": {
+                                            "Failed_Response:_Status_Code_400": [
+                                                "Succeeded"
+                                            ]
+                                        },
+                                        "type": "Terminate",
+                                        "inputs": {
+                                            "runError": {
+                                                "code": "400",
+                                                "message": "Failed to Send teams message"
+                                            },
+                                            "runStatus": "Failed"
+                                        }
+                                    }
+                                }
+                            },
+                            "expression": "@triggerBody()?['object']?['severity']",
+                            "type": "Switch"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {}
+            }
+        }
+    ]
+}
