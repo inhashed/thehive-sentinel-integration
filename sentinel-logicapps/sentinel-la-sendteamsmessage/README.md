@@ -56,7 +56,7 @@ URL of the incomming Teams webhook for high severity indicents.
 
 #### thehivebaseurl
 
-The base url of a TheHive instance. In the teams message, a link to a TheHive instance is provided based on the organziation name: \<orangization\>-thehive-\<thehivebaseurl\>
+The base url of a TheHive instance. In the teams message, a link to a TheHive instance is provided based on the organziation name: \<orangization\>-thehive-\<thehivebaseurl\>.
 
 ## Teams webhook
 

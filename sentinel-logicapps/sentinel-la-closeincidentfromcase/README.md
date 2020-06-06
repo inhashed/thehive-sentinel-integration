@@ -44,7 +44,7 @@ The HTTP webrequest trigger of the Logic App expects a request body with the fol
 
 #### sentinel-la-closeincidentfromalertURL
 
-The URL of the HTTP webrequest trigger of sentinel-la-closeincidentfromalert Logic Apps
+The URL of the HTTP webrequest trigger of sentinel-la-closeincidentfromalert Logic Apps.
 
 #### thehiveurl
 
