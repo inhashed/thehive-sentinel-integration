@@ -2,23 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "PlaybookName": {
+        "playbookName": {
             "defaultValue": "sentinel-la-sendteamsmessage",
             "type": "string"
         },
-        "highseverityteamswebhook": {
+        "highSeverityTeamsWebhook": {
             "defaultValue": "TeamsIncommingWebhookURL",
             "type": "string"
         },
-        "lowseverityteamswebhook": {
+        "lowSeverityTeamsWebhook": {
             "defaultValue": "TeamsIncommingWebhookURL",
             "type": "string"
         },
-        "mediumseverityteamswebhook": {
+        "mediumSeverityTeamsWebhook": {
             "defaultValue": "TeamsIncommingWebhookURL",
             "type": "string"
         },
-        "thehivebaseurl": {
+        "theHiveBaseURL": {
             "defaultValue": "-thehive.example.com",
             "type": "string"
         }
@@ -28,7 +28,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('PlaybookName')]",
+            "name": "[parameters('playbookName')]",
             "location": "westeurope",
             "properties": {
                 "state": "Enabled",
@@ -36,20 +36,20 @@
                     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
-                        "highseverityteamswebhook": {
-                            "defaultValue": "[parameters('highseverityteamswebhook')]",
+                        "highSeverityTeamsWebhook": {
+                            "defaultValue": "[parameters('highSeverityTeamsWebhook')]",
                             "type": "String"
                         },
-                        "lowseverityteamswebhook": {
-                            "defaultValue": "[parameters('mediumseverityteamswebhook')]",
+                        "lowSeverityTeamsWebhook": {
+                            "defaultValue": "[parameters('lowSeverityTeamsWebhook')]",
                             "type": "String"
                         },
-                        "mediumseverityteamswebhook": {
-                            "defaultValue": "[parameters('mediumseverityteamswebhook')]",
+                        "mediumSeverityTeamsWebhook": {
+                            "defaultValue": "[parameters('mediumSeverityTeamsWebhook')]",
                             "type": "String"
                         },
-                        "thehivebaseurl": {
-                            "defaultValue": "[parameters('thehivebaseurl')]",
+                        "theHiveBaseURL": {
+                            "defaultValue": "[parameters('theHiveBaseURL')]",
                             "type": "String"
                         }
                     },
@@ -190,7 +190,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "Access TheHive",
                                                             "target": [
-                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('theHiveBaseURL')}"
                                                             ]
                                                         }
                                                     ],
@@ -206,7 +206,7 @@
                                                     "title": "@{triggerBody()?['object']?['title']}"
                                                 },
                                                 "method": "POST",
-                                                "uri": "@parameters('highseverityteamswebhook')"
+                                                "uri": "@parameters('highSeverityTeamsWebhook')"
                                             }
                                         }
                                     }
@@ -250,7 +250,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "Access TheHive",
                                                             "target": [
-                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('theHiveBaseURL')}"
                                                             ]
                                                         }
                                                     ],
@@ -266,7 +266,7 @@
                                                     "title": "@{triggerBody()?['object']?['title']}"
                                                 },
                                                 "method": "POST",
-                                                "uri": "@parameters('lowseverityteamswebhook')"
+                                                "uri": "@parameters('lowSeverityTeamsWebhook')"
                                             }
                                         }
                                     }
@@ -310,7 +310,7 @@
                                                             "@@type": "ViewAction",
                                                             "name": "Access TheHive",
                                                             "target": [
-                                                                "https://@{triggerBody()?['Organization']}@{parameters('thehivebaseurl')}"
+                                                                "https://@{triggerBody()?['Organization']}@{parameters('theHiveBaseURL')}"
                                                             ]
                                                         }
                                                     ],
@@ -326,7 +326,7 @@
                                                     "title": "@{triggerBody()?['object']?['title']}"
                                                 },
                                                 "method": "POST",
-                                                "uri": "@parameters('mediumseverityteamswebhook')"
+                                                "uri": "@parameters('mediumSeverityTeamsWebhook')"
                                             }
                                         }
                                     }

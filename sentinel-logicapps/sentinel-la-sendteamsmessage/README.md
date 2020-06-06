@@ -1,10 +1,10 @@
 # sentinel-la-sendteamsmessage
 
-Sentinel-la-sendteamsmessage is a Logic App with a webrequest trigger to be used together with [thehivesentinelhooks](../../thehive-sentinel-hooks). The URL of the webrequest trigger should be set as the newAlertURL parameter.
+Sentinel-la-sendteamsmessage is a Logic App with a HTTP webrequest trigger to be used together with [thehivesentinelhooks](../../thehive-sentinel-hooks). The URL of the HTTP webrequest trigger should be set as the newAlertURL parameter.
 
 ## Request body
 
-The Webrequest trigger in the Logic App expects a request body with the following json structure:
+The HTTP webrequest trigger of the Logic App expects a request body with the following json structure:
 
 ```json
 {
