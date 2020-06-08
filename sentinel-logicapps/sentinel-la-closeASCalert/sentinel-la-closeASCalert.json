@@ -6,10 +6,6 @@
             "defaultValue": "sentinel-la-closeASCalert",
             "type": "string"
         },
-        "connections_azuremonitorlogs_1_externalid": {
-            "defaultValue": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/resourceGroups/wstinkens-rg/providers/Microsoft.Web/connections/azuremonitorlogs-1",
-            "type": "string"
-        },
         "sentinelResourceGroupName": {
             "defaultValue": "sentinelResourceGroupName",
             "type": "string"
