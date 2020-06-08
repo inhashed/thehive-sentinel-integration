@@ -1,6 +1,6 @@
 # thehive-sentinel-incident
 
-thehive-sentinel-incedent is a Python script created to pull Azure Sentinel incidents into TheHive as alerts. It queries the Azure Sentinel API for new incidents and gets the alert entities from the Azure Sentinel Log Analytics workspace to be created as TheHive observables.
+thehive-sentinel-incident is a Python script created to pull Azure Sentinel incidents into TheHive as alerts. It queries the Azure Sentinel API for new incidents and gets the alert entities from the Azure Sentinel Log Analytics workspace to be created as TheHive observables.
 
 ## Azure App Registration
 
