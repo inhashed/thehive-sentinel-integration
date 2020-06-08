@@ -80,3 +80,7 @@ To periodically run thehive-sentinel-incidents, use a cron job:
 ```sh
 */5 * * * * python3 /opt/thehive-sentinel-incident/thehivesentinelincidents.py >> /var/log/thehivesentinelincidents.log 2>&1
 ```
+
+## Ansible
+
+To deploy a TheHive/Cortex instance with thehive-sentinel-incidents preconfigured, you can use the [ansible-thehive](https://github.com/NVISO-BE/ansible-thehive) Ansible role available on the NVISO GitHub.
